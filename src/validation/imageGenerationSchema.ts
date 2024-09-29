@@ -15,7 +15,7 @@ export const imageGenerationSchema = z.object({
     .number()
     .min(1, "Must generate at least 1 image.")
     .max(4, "Cannot generate more than 4 images."),
-  image: z.string().url().optional(),
-  mask: z.string().url().optional(),
+  image: z.string().optional(),
+  mask: z.string().optional(),
   prompt_strength: z.number().min(0).max(1).optional(),
 });
