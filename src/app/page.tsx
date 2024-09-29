@@ -17,7 +17,6 @@ import LoadingCircle from "@/components/LoadingCircle";
 
 import Image from "next/image";
 import { Download } from "lucide-react";
-import { z } from "zod";
 
 interface HistoryEntry {
   prompt: string;
@@ -35,7 +34,7 @@ const Home = () => {
   const [mask, setMaskUrl] = useState("");
   const [prompt_strength, setPromptStrength] = useState(0.8);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
-  const [formErrors, setFormErrors] = useState<z.ZodError | null>(null);
+  const [errorMessages, setErrorMessages] = useState<string[] | null>([]);
 
   const { output, generateImage, loading, error } = useImageGeneration();
 
@@ -63,39 +62,29 @@ const Home = () => {
   };
 
   const handleSubmit = useCallback(() => {
-    console.log("here");
-    try {
-      // Validate the form data using Zod
-      const formData = {
-        prompt,
-        negative_prompt,
-        width,
-        height,
-        num_outputs,
-        image,
-        mask,
-        prompt_strength,
-      };
-      // Validate data
-      const validationResult = imageGenerationSchema.safeParse(formData);
+    const formData = {
+      prompt,
+      negative_prompt,
+      width,
+      height,
+      num_outputs,
+      image,
+      mask,
+      prompt_strength,
+    };
 
-      if (validationResult.success) {
-        // Validation passed, extract data
-        const imageGenerationOptions: ImageGenerationOptions =
-          validationResult.data;
+    const validationResult = imageGenerationSchema.safeParse(formData);
 
-        // Now pass this data to the function that requires ImageGenerationOptions
-        generateImage(imageGenerationOptions);
-        setFormErrors(null);
-      } else {
-        // Validation failed, handle error
-        console.error("Validation error:", validationResult.error);
-        setFormErrors(validationResult.error);
-      }
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        setFormErrors(err);
-      }
+    if (validationResult.success) {
+      const imageGenerationOptions: ImageGenerationOptions =
+        validationResult.data;
+      generateImage(imageGenerationOptions);
+      setErrorMessages(null);
+    } else {
+      console.error("Validation error:", validationResult.error);
+      setErrorMessages(
+        validationResult.error.errors.map((error) => error.message)
+      );
     }
   }, [
     prompt,
@@ -133,17 +122,30 @@ const Home = () => {
                 Stable Diffusion AI Image Generator
               </h2>
               <hr className="mb-8 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25" />
+              {errorMessages?.length! > 0 && (
+                <div
+                  className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+                  role="alert"
+                >
+                  <strong className="font-bold">
+                    Oops! Validation Errors:
+                  </strong>
+                  <ul className="mt-2">
+                    {errorMessages?.map((message, index) => (
+                      <li key={index} className="text-sm">
+                        • {message}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               <InputField
                 label="Prompt"
                 value={prompt}
                 onChange={setPrompt}
                 placeholder="Input prompt"
               />
-              {formErrors?.formErrors.fieldErrors.prompt && (
-                <p className="text-red-600">
-                  {formErrors.formErrors.fieldErrors.prompt}
-                </p>
-              )}
 
               <DimensionField
                 width={width}
@@ -151,16 +153,6 @@ const Home = () => {
                 setWidth={setWidth}
                 setHeight={setHeight}
               />
-              {formErrors?.formErrors.fieldErrors.width && (
-                <p className="text-red-600">
-                  {formErrors.formErrors.fieldErrors.width}
-                </p>
-              )}
-              {formErrors?.formErrors.fieldErrors.height && (
-                <p className="text-red-600">
-                  {formErrors.formErrors.fieldErrors.height}
-                </p>
-              )}
 
               <SelectField
                 label="Number of Outputs"
@@ -168,11 +160,6 @@ const Home = () => {
                 value={num_outputs}
                 onChange={setNumOutputs}
               />
-              {formErrors?.formErrors.fieldErrors.num_outputs && (
-                <p className="text-red-600">
-                  {formErrors.formErrors.fieldErrors.num_outputs}
-                </p>
-              )}
 
               {advancedOptions && (
                 <>
