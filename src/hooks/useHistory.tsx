@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-interface HistoryEntry {
+export interface HistoryEntry {
   prompt: string;
   output: string[] | null;
 }

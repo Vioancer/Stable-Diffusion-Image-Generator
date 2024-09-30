@@ -1,7 +1,29 @@
 import { useState, useCallback } from "react";
-import { z } from "zod";
 import { imageGenerationSchema } from "../validation/imageGenerationSchema";
 import { ImageGenerationOptions } from "../hooks/useImageGeneration";
+
+export interface FormState {
+  prompt: string;
+  setPrompt: (value: string) => void;
+  negative_prompt: string;
+  setNegativePrompt: (value: string) => void;
+  advancedOptions: boolean;
+  setAdvancedOptions: (value: boolean) => void;
+  width: number;
+  setWidth: (value: number) => void;
+  height: number;
+  setHeight: (value: number) => void;
+  num_outputs: number;
+  setNumOutputs: (value: number) => void;
+  image: string;
+  setImageUrl: (value: string) => void;
+  mask: string;
+  setMaskUrl: (value: string) => void;
+  prompt_strength: number;
+  setPromptStrength: (value: number) => void;
+  errorMessages: string[];
+  handleSubmit: () => void;
+}
 
 export const useFormManagement = (
   generateImage: (options: ImageGenerationOptions) => void
@@ -50,6 +72,7 @@ export const useFormManagement = (
     image,
     mask,
     prompt_strength,
+    generateImage,
   ]);
 
   return {
@@ -73,5 +96,5 @@ export const useFormManagement = (
     setPromptStrength,
     errorMessages,
     handleSubmit,
-  };
+  } as FormState;
 };

@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { Download } from "lucide-react";
+import { HistoryEntry } from "@/hooks/useHistory";
 
 interface HistoryListProps {
   loading: boolean;
-  history: any[];
+  history: HistoryEntry[];
   downloadImage: (url: string) => Promise<unknown>;
 }
 
@@ -26,10 +27,12 @@ const HistoryList: React.FC<HistoryListProps> = ({
               <div className="my-4 flex flex-wrap gap-4">
                 {Array.isArray(frame?.output) &&
                   frame.output.map((url: string, index: number) => (
-                    <div className="relative rounded-md grow overflow-hidden group">
+                    <div
+                      key={index}
+                      className="relative rounded-md grow overflow-hidden group"
+                    >
                       <Image
                         className="w-full"
-                        key={index}
                         src={url}
                         width={300}
                         height={300}

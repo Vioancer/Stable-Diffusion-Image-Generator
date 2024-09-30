@@ -3,9 +3,10 @@ import DimensionField from "./FormFields/DimensionField";
 import SelectField from "./FormFields/SelectField";
 import UploadField from "./FormFields/UploadField";
 import PromptStrengthField from "./FormFields/PromptStrengthField";
+import { FormState } from "@/hooks/useFormManagement";
 
 interface FormContainerProps {
-  formState: any;
+  formState: FormState;
   loading: boolean;
 }
 
@@ -44,7 +45,7 @@ const FormContainer: React.FC<FormContainerProps> = ({
         </h2>
         <hr className="mb-8 h-px border-t-0 bg-transparent bg-gradient-to-r from-transparent via-neutral-500 to-transparent opacity-25" />
 
-        {errorMessages?.length! > 0 && (
+        {errorMessages && errorMessages.length > 0 && (
           <div
             className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
             role="alert"

@@ -51,8 +51,12 @@ export const useImageGeneration = () => {
 
       const data = await response.json();
       setOutput(data.output);
-    } catch (err) {
-      setError("Error generating image");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred");
+      }
     } finally {
       setLoading(false);
     }

@@ -9,6 +9,25 @@ const replicate = new Replicate({
 const model =
   "stability-ai/sdxl:7762fd07cf82c948538e41f63f77d685e02b063e37e496e96eefd46c929f9bdc";
 
+// Define a specific input type
+interface Input {
+  width: number;
+  height: number;
+  prompt: string;
+  negative_prompt?: string;
+  num_outputs?: number;
+  image?: string;
+  mask?: string;
+  prompt_strength?: number;
+  refine?: string;
+  scheduler?: string;
+  lora_scale?: number;
+  guidance_scale?: number;
+  apply_watermark?: boolean;
+  high_noise_frac?: number;
+  num_inference_steps?: number;
+}
+
 export async function POST(req: Request) {
   const {
     prompt,
@@ -19,10 +38,19 @@ export async function POST(req: Request) {
     image,
     mask,
     prompt_strength,
-  } = await req.json();
+  }: Omit<
+    Input,
+    | "refine"
+    | "scheduler"
+    | "lora_scale"
+    | "guidance_scale"
+    | "apply_watermark"
+    | "high_noise_frac"
+    | "num_inference_steps"
+  > = await req.json();
 
   try {
-    const input: { [key: string]: any } = {
+    const input: Input = {
       width,
       height,
       prompt,
@@ -36,32 +64,17 @@ export async function POST(req: Request) {
       high_noise_frac: 0.8,
       prompt_strength,
       num_inference_steps: 25,
+      image,
+      mask,
     };
-
-    if (image) {
-      input.image = image;
-    }
-
-    if (mask) {
-      input.mask = mask;
-    }
 
     console.log("Using model: %s", model);
     console.log("With input: %O", input);
 
-    console.log("Running...");
-
     const output = await replicate.run(model, { input });
-    console.log("Output: %O", output);
     return NextResponse.json({ output });
-
-    // const output = [
-    //   "https://replicate.delivery/pbxt/8PLRf8aYnSVnByYIFKCZ4Wug9ZVuPpxCsMxfpv1kSqqfCqDnA/out-0.png",
-    //   "https://replicate.delivery/pbxt/SfjfHWROa1s9fJTo1910QltRT0Z6YwaaMx7LRT7Rqxw8jwCnA/out-0.png",
-    //   "https://replicate.delivery/pbxt/SfjfHWROa1s9fJTo1910QltRT0Z6YwaaMx7LRT7Rqxw8jwCnA/out-0.png",
-    // ];
-    // return NextResponse.json({ output });
-  } catch (error) {
+  } catch (err) {
+    console.error(err);
     return NextResponse.json(
       {
         error: "Failed to generate image",

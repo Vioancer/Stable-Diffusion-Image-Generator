@@ -39,7 +39,7 @@ const Home = () => {
   return (
     <div className="items-center min-h-screen py-2">
       <h1 className="mt-6 mb-12 md:mt-8 md:mb-16 text-3xl md:text-4xl font-bold text-purple-600 text-center transition-all">
-        Let's make your creativity reality!
+        Let&apos;s make your creativity reality!
       </h1>
       <div className="flex justify-center">
         <div className="px-4 flex max-w-7xl w-full flex-wrap gap-4 justify-center">
