@@ -38,35 +38,32 @@ export async function POST(req: Request) {
     image,
     mask,
     prompt_strength,
-  }: Omit<
-    Input,
-    | "refine"
-    | "scheduler"
-    | "lora_scale"
-    | "guidance_scale"
-    | "apply_watermark"
-    | "high_noise_frac"
-    | "num_inference_steps"
-  > = await req.json();
+  } = await req.json();
 
   try {
     const input: Input = {
-      width,
-      height,
       prompt,
       negative_prompt,
+      width,
+      height,
       num_outputs,
+      prompt_strength,
       refine: "expert_ensemble_refiner",
       scheduler: "K_EULER",
       lora_scale: 0.6,
       guidance_scale: 7.5,
       apply_watermark: false,
       high_noise_frac: 0.8,
-      prompt_strength,
       num_inference_steps: 25,
-      image,
-      mask,
     };
+
+    if (image.length) {
+      input.image = image;
+    }
+
+    if (mask.length) {
+      input.mask = mask;
+    }
 
     console.log("Using model: %s", model);
     console.log("With input: %O", input);
@@ -74,7 +71,7 @@ export async function POST(req: Request) {
     const output = await replicate.run(model, { input });
     return NextResponse.json({ output });
   } catch (err) {
-    console.error(err);
+    console.log(err);
     return NextResponse.json(
       {
         error: "Failed to generate image",
