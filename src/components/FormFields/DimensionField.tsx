@@ -13,8 +13,11 @@ const DimensionField: React.FC<DimensionFieldProps> = ({
 }: DimensionFieldProps) => (
   <div className="flex justify-between mb-4">
     <div className="w-1/2 mr-2">
-      <label className="block text-left mb-2 font-medium">Width</label>
+      <label htmlFor="width" className="block text-left mb-2 font-medium">
+        Width
+      </label>
       <input
+        id="width"
         type="number"
         className="w-full border p-2 rounded"
         value={width}
@@ -23,8 +26,11 @@ const DimensionField: React.FC<DimensionFieldProps> = ({
     </div>
 
     <div className="w-1/2 ml-2">
-      <label className="block text-left mb-2 font-medium">Height</label>
+      <label htmlFor="height" className="block text-left mb-2 font-medium">
+        Height
+      </label>
       <input
+        id="height"
         type="number"
         className="w-full border p-2 rounded"
         value={height}

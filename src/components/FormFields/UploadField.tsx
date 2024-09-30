@@ -1,20 +1,20 @@
-import { UploadDropzone } from "@/utils/uploadthing";
+import { UploadDropzone } from "@/lib/uploadthing";
 import Image from "next/image";
 import { X } from "lucide-react";
 
-interface FileInputFieldProps {
+interface UploadFieldProps {
   label: string;
   description: string;
   value: string;
   onChange: (value: string) => void;
 }
 
-const FileInputField: React.FC<FileInputFieldProps> = ({
+const UploadField: React.FC<UploadFieldProps> = ({
   label,
   description,
   onChange,
   value,
-}: FileInputFieldProps) => {
+}: UploadFieldProps) => {
   return (
     <div className="mb-4">
       <label className="block text-left mb-1 font-medium">{label}</label>
@@ -39,7 +39,7 @@ const FileInputField: React.FC<FileInputFieldProps> = ({
       ) : (
         <UploadDropzone
           endpoint="productImage"
-          className="border-gray-300 ut-button:bg-purple-600 hover:ut-button:bg-purple-600/70 ut-label:text-purple-600 hover:ut-label:text-purple-600/70 ut-button:w-full focus:ut-button:border-none"
+          className="border-gray-300 ut-button:bg-purple-600 hover:ut-button:bg-purple-600/70 ut-button:ut-uploading:bg-purple-600/70 after:ut-button:ut-uploading:bg-purple-600/70 ut-label:text-purple-600 hover:ut-label:text-purple-600/70 ut-button:w-full"
           onClientUploadComplete={(res) => {
             console.log("files", res);
             onChange(res[0].url);
@@ -57,4 +57,4 @@ const FileInputField: React.FC<FileInputFieldProps> = ({
   );
 };
 
-export default FileInputField;
+export default UploadField;

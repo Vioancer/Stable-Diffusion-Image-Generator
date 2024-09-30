@@ -1,7 +1,7 @@
 import InputField from "./FormFields/InputField";
 import DimensionField from "./FormFields/DimensionField";
 import SelectField from "./FormFields/SelectField";
-import FileInputField from "./FormFields/FileInputField";
+import UploadField from "./FormFields/UploadField";
 import PromptStrengthField from "./FormFields/PromptStrengthField";
 
 interface FormContainerProps {
@@ -90,14 +90,14 @@ const FormContainer: React.FC<FormContainerProps> = ({
               placeholder="Input negative prompt"
             />
 
-            <FileInputField
+            <UploadField
               label="Image (Optional)"
               description="(Input image for img2img or inpaint mode.)"
               onChange={setImageUrl}
               value={image}
             />
 
-            <FileInputField
+            <UploadField
               label="Mask (Optional)"
               description="(Input mask for inpaint mode.)"
               onChange={setMaskUrl}

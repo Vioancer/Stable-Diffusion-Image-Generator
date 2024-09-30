@@ -3,7 +3,7 @@ import { extractRouterConfig } from "uploadthing/server";
 
 import { ourFileRouter } from "./api/uploadthing/core";
 import "@uploadthing/react/styles.css";
-import "./globals.css";
+import "@/styles/globals.css";
 
 export default function RootLayout({
   children,

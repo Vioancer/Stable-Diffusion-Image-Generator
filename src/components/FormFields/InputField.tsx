@@ -10,18 +10,25 @@ const InputField: React.FC<InputFieldProps> = ({
   value,
   onChange,
   placeholder,
-}: InputFieldProps) => (
-  <div className="mb-4">
-    <label className="block text-left mb-2 font-medium">{label}</label>
-    <input
-      type="text"
-      placeholder={placeholder}
-      className="w-full border p-2 rounded"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      required={true}
-    />
-  </div>
-);
+}: InputFieldProps) => {
+  const inputId = label.replace(/\s+/g, "-").toLowerCase(); // Create an id from the label
+
+  return (
+    <div className="mb-4">
+      <label htmlFor={inputId} className="block text-left mb-2 font-medium">
+        {label}
+      </label>
+      <input
+        id={inputId}
+        type="text"
+        placeholder={placeholder}
+        className="w-full border p-2 rounded"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        required={true}
+      />
+    </div>
+  );
+};
 
 export default InputField;
