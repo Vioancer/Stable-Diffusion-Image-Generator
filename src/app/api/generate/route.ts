@@ -52,10 +52,11 @@ export async function POST(req: Request) {
     console.log("Running...");
 
     // const output = await replicate.run(model, { input });
+    // console.log("Output: %O", output);
     // return NextResponse.json({ output });
 
     const output = [
-      "https://replicate.delivery/pbxt/SfjfHWROa1s9fJTo1910QltRT0Z6YwaaMx7LRT7Rqxw8jwCnA/out-0.png",
+      "https://replicate.delivery/pbxt/8PLRf8aYnSVnByYIFKCZ4Wug9ZVuPpxCsMxfpv1kSqqfCqDnA/out-0.png",
       "https://replicate.delivery/pbxt/SfjfHWROa1s9fJTo1910QltRT0Z6YwaaMx7LRT7Rqxw8jwCnA/out-0.png",
       "https://replicate.delivery/pbxt/SfjfHWROa1s9fJTo1910QltRT0Z6YwaaMx7LRT7Rqxw8jwCnA/out-0.png",
     ];
