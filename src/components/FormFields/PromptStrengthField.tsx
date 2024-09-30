@@ -15,7 +15,7 @@ const PromptStrengthField: React.FC<PromptStrengthFieldProps> = ({
       Prompt Strength
     </label>
     <label className="block text-left mb-2">
-      (Prompt Strength for img2img / inpaint. 1.0 stands for full destruction of
+      (Prompt Strength for img2img / max is corresponding to full destruction of
       information in image.)
     </label>
     <input
@@ -24,7 +24,7 @@ const PromptStrengthField: React.FC<PromptStrengthFieldProps> = ({
       min="0"
       max="1"
       step="0.05"
-      className="w-full"
+      className="w-full accent-purple-600"
       value={value}
       onChange={(e) => onChange(parseFloat(e.target.value))}
     />
