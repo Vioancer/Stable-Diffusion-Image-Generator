@@ -19,6 +19,7 @@ const InputField: React.FC<InputFieldProps> = ({
       className="w-full border p-2 rounded"
       value={value}
       onChange={(e) => onChange(e.target.value)}
+      required={true}
     />
   </div>
 );
